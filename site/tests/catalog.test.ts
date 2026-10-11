@@ -59,6 +59,14 @@ describe('README catalog', () => {
     expect(() => parseReadme('## Packages\n### Utilities\n- [bad](javascript:alert) - Unsafe link.')).toThrow(/URL|protocol/i);
   });
 
+  test('parses Clients & SDKs as its own kind and leaves editor integration unchanged', () => {
+    const markdown = `## Themes\n### Editor Integration\n${entry('pi-acp', 'Editor.', 'npm install -g pi-acp')}\n## Clients & SDKs\n\nProjects that do not fork Pi.\n\n- [Pace](https://github.com/example/pace) - Desktop GUI.\n## Alternative Distributions\n${entry('fork', 'Standalone.', 'curl -fsSL https://example.com/install | sh')}`;
+    const records = parseReadme(markdown);
+    expect(records.find(record => record.name === 'Pace')).toMatchObject({ kind: 'clients', category: 'clients-sdks', install: null });
+    expect(records.find(record => record.name === 'pi-acp')?.kind).toBe('integrations');
+    expect(records.find(record => record.name === 'fork')?.kind).toBe('distributions');
+  });
+
   test('parses Built on Pi Durable entries as the durable kind without conflicting with same-name packages', () => {
     const markdown = `## Packages\n### Subagents\n${entry('pi-fabric', 'Extension runtime.')}\n## Built on Pi Durable\n\nIntro paragraph.\n\n> Note line.\n\n- [pi-pocket](https://github.com/example/pocket) - Multiplayer app.\n## Alternative Distributions\n${entry('fork', 'Standalone.', 'curl -fsSL https://example.com/install | sh')}`;
     const records = parseReadme(markdown);
@@ -80,6 +88,12 @@ describe('README catalog', () => {
     expect(catalog.resources.find(resource => resource.name === 'pi-verdict')?.descriptions.en.join(' ')).toContain('not an OS-level sandbox');
     expect(catalog.resources.find(resource => resource.name === 'pi-acp')?.kind).toBe('integrations');
     expect(catalog.resources.find(resource => resource.name === 'oh-my-pi')?.kind).toBe('distributions');
+    expect(catalog.resources.find(resource => resource.name === 'oh-my-pi')?.categories).not.toContain('clients-sdks');
+    for (const name of ['@jmfederico/pi-web', 'pitago', 'Pace']) {
+      expect(catalog.resources.find(resource => resource.name === name)?.kind).toBe('clients');
+    }
+    expect(catalog.categories.some(category => category.name === 'Web UI' || category.id === 'web-ui')).toBe(false);
+    expect(readFilters('?category=clients', []).category).toBe('clients');
     for (const resource of catalog.resources) {
       expect(resource.descriptions.en.length).toBeGreaterThan(0);
       expect(resource.descriptions.zh.length).toBeGreaterThan(0);

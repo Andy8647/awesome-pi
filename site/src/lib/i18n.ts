@@ -1,7 +1,7 @@
 import type { Locale, ResourceKind } from './catalog';
 
 export const repository = 'https://github.com/BubblePtr/awesome-pi';
-export const kindOrder: ResourceKind[] = ['packages', 'themes', 'integrations', 'durable', 'distributions'];
+export const kindOrder: ResourceKind[] = ['packages', 'themes', 'integrations', 'durable', 'clients', 'distributions'];
 export const text = {
   en: {
     title: 'Pi Index — A curated directory for Pi Coding Agent',
@@ -23,7 +23,7 @@ export const text = {
     noScript: 'All resources are listed below. Enable JavaScript to search, filter, and copy commands.',
     statsStars: 'GitHub stars', statsDownloads: 'npm downloads per week', perWeek: '/wk',
     statsUpdated: 'GitHub stars and npm downloads updated {date}.',
-    kinds: { packages: 'Packages', themes: 'Themes', integrations: 'Editor integrations', durable: 'Built on Pi Durable', distributions: 'Distributions' },
+    kinds: { packages: 'Packages', themes: 'Themes', integrations: 'Editor integrations', durable: 'Built on Pi Durable', clients: 'Clients & SDKs', distributions: 'Distributions' },
   },
   zh: {
     title: 'Pi Index — Pi Coding Agent 社区资源精选',
@@ -45,7 +45,7 @@ export const text = {
     noScript: '下方已展示全部资源。启用 JavaScript 后可使用搜索、筛选与命令复制。',
     statsStars: 'GitHub Star 数', statsDownloads: 'npm 每周下载量', perWeek: '/周',
     statsUpdated: 'GitHub Star 与 npm 下载数据更新于 {date}。',
-    kinds: { packages: '扩展包', themes: '主题', integrations: '编辑器集成', durable: '基于 Pi Durable', distributions: '替代发行版' },
+    kinds: { packages: '扩展包', themes: '主题', integrations: '编辑器集成', durable: '基于 Pi Durable', clients: '客户端与 SDK', distributions: '替代发行版' },
   },
 } satisfies Record<Locale, object>;
 
@@ -55,12 +55,12 @@ const categoryNames: Record<string, string> = {
   'Dev Tools & Code Intelligence': '开发与代码智能', 'Persistent Memory': '持久化记忆',
   'Context Management': '上下文管理', 'Loop Engineering': '循环工程', 'Code Review': '代码审查',
   'Task Management': '任务管理', 'Plan Mode': '规划模式', 'Background Tasks': '后台任务',
-  'Browser Automation': '浏览器自动化', 'Web UI': 'Web 界面',
+  'Browser Automation': '浏览器自动化',
   'Communication & Collaboration': '通信与协作', Utilities: '实用工具',
   'Package Collections': '扩展合集', 'Dark Themes': '深色主题', 'Light Themes': '浅色主题',
   'Theme Packs': '主题合集', 'Featured Themes': '特色主题', 'Theme Tools': '主题工具',
   'Editor Integration': '编辑器集成', 'Built on Pi Durable': '基于 Pi Durable',
-  'Alternative Distributions': '替代发行版',
+  'Clients & SDKs': '客户端与 SDK', 'Alternative Distributions': '替代发行版',
 };
 export function categoryLabel(name: string, locale: Locale): string {
   return locale === 'zh' ? categoryNames[name] ?? name : name;

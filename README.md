@@ -43,7 +43,6 @@ pi list
   - [Plan Mode](#plan-mode)
   - [Background Tasks](#background-tasks)
   - [Browser Automation](#browser-automation)
-  - [Web UI](#web-ui)
   - [Communication & Collaboration](#communication--collaboration)
   - [Utilities](#utilities)
   - [Package Collections](#package-collections)
@@ -55,6 +54,7 @@ pi list
   - [Theme Tools](#theme-tools)
 - [Editor Integration](#editor-integration)
 - [Built on Pi Durable](#built-on-pi-durable)
+- [Clients & SDKs](#clients--sdks)
 - [Alternative Distributions](#alternative-distributions)
 
 ---
@@ -257,14 +257,6 @@ Pi 核心不内置 plan mode，用扩展补只读规划。
 
 ---
 
-### Web UI
-
-浏览器监督跑在真实工作区里的 Pi 会话。
-
-- 🔥 [@jmfederico/pi-web](https://github.com/jmfederico/pi-web) - 浏览器监督真实工作区中的 Pi 会话，断线不杀进程。[pi-web.dev](https://pi-web.dev/) `pi install npm:@jmfederico/pi-web`
-
----
-
 ### Communication & Collaboration
 
 通信与协作 Package。
@@ -426,12 +418,20 @@ Pi 核心不内置 plan mode，用扩展补只读规划。
 - [pi-durabletask-mcp](https://github.com/Nyarlathoteppppp/pi-durabletask-mcp) - MCP 服务：将任务委托给 Durable 子代理，支持后台执行、中途引导与崩溃恢复。需要全局安装 Pi，不支持 Windows。`npm install -g pi-durabletask-mcp`
 
 
+## Clients & SDKs
+
+不 fork Pi 的 agent 核心。它们运行你已经安装的 Pi，并提供另一种界面或编程访问：GUI、桌面、Web 与 TUI 前端，以及 SDK 和 RPC 封装。[替代发行版](#alternative-distributions)自带 fork 后的 agent 核心，不需要安装 Pi。
+
+- 🔥 [@jmfederico/pi-web](https://github.com/jmfederico/pi-web) - 浏览器监督真实工作区中的 Pi 会话，断线不杀进程。[pi-web.dev](https://pi-web.dev/) `pi install npm:@jmfederico/pi-web`
+- [pitago](https://github.com/cavaldos/pitago) - Pi 编程助手的精美终端 UI（TUI）前端：实时流式聊天、侧边栏会话/模型/token 统计、命令面板、主题、市场、图片视觉支持。独立 Go/Bubble Tea CLI，通过 `pi --mode rpc` 驱动，非 Pi Package。
+- [Pace](https://github.com/bubbleptr/pace) - Pi 编程助手的桌面 GUI（早期 0.y.z）：会话时间线与轨迹，每一轮的费用和 token 以 Pi 自己的日志为准。Electron + React；共享 `~/.pi/agent`，不 fork Pi，并内置 Pi 运行时。从 GitHub Releases 安装最新的 Apple Silicon DMG 或 Linux x64 AppImage/deb。
+
+
 ## Alternative Distributions
 
 Pi 的 fork/替代发行版，提供开箱即用的增强体验。
 
 - [oh-my-pi](https://github.com/can1357/oh-my-pi) - Pi 的增强 fork（约 25.8k★），集成 40+ provider、32 内置工具、LSP/DAP、Python 运行时、浏览器自动化。独立 CLI，非 Pi Package。不要和 npm 上无关的 `oh-my-pi`（acidsugarx）搞混。`curl -fsSL https://omp.sh/install | sh`
-- [pitago](https://github.com/cavaldos/pitago) - Pi 编程助手的精美终端 UI（TUI）前端：实时流式聊天、侧边栏会话/模型/token 统计、命令面板、主题、市场、图片视觉支持。独立 Go/Bubble Tea CLI，通过 `pi --mode rpc` 驱动，非 Pi Package。
 
 
 ## Contributing
