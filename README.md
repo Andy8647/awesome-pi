@@ -452,6 +452,18 @@ Pi 的 fork/替代发行版，提供开箱即用的增强体验。
 - 标注作者信息（如有）
 - 仅在发布者和源码仓库可核实的情况下标注“Pi 官方”；不要根据安装方式、包名是否带 scope 或目录收录情况判断归属
 
+### 可选的 “Listed on Pi Index” 徽章
+
+如果希望读者从项目 README 找到本目录，欢迎加上指向 [Pi Index](https://piindex.dev/) 的链接。添加徽章完全自愿，不是收录或贡献的要求。
+
+添加此徽章不影响一个包是否被收录、如何被收录，也不影响是否被推荐。
+
+```markdown
+[![Listed on Pi Index](https://piindex.dev/pi-index-badge.svg)](https://piindex.dev/)
+```
+
+上面的代码把徽章指向 Pi Index 首页。如果该包已有指南页，可以把同一张图片指向该页面，例如 `https://piindex.dev/packages/pi-web-access/`。
+
 ### npm Scope 迁移说明
 
 Pi 官方核心 npm 包已从 `@mariozechner` 迁移到 `@earendil-works`。下表列出的是核心包的命名变化，不是社区扩展的命名规则；各扩展仍使用其发布者指定的完整包名。

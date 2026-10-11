@@ -451,6 +451,18 @@ Contributions are welcome! Here's how you can help:
 - Include author information where available
 - Only label a resource as "official Pi" when its publisher and source repository support that attribution; do not infer it from installation method, scoped or unscoped names, or catalog inclusion
 
+### Optional "Listed on Pi Index" badge
+
+A link to [Pi Index](https://piindex.dev/) in your project README is appreciated when you want readers to find this directory. Adding the badge is purely voluntary and is not required.
+
+Adding the badge has no effect on whether a package is listed, how it is listed, or whether it is recommended.
+
+```markdown
+[![Listed on Pi Index](https://piindex.dev/pi-index-badge.svg)](https://piindex.dev/)
+```
+
+That snippet points the badge at the Pi Index homepage. When a guide page exists for the package, point the same image at that page instead, for example `https://piindex.dev/packages/pi-web-access/`.
+
 ### npm Scope Migration Note
 
 Official Pi core npm packages have migrated from `@mariozechner` to `@earendil-works`. The table below lists core package renames, not a naming rule for community extensions. Each extension keeps the full package name specified by its publisher.
