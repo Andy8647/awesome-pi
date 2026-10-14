@@ -284,6 +284,63 @@ describe('conversation pages', () => {
       } finally { win.happyDOM.abort(); }
     });
   }
+  test('structured data and the new pages are present in both languages', () => {
+    const dist = new URL('../dist/', import.meta.url);
+    const page = (file: string) => {
+      const win = new Window();
+      win.document.write(readFileSync(new URL(file, dist), 'utf8'));
+      const scripts = win.document.querySelectorAll('script[type="application/ld+json"]');
+      expect(scripts).toHaveLength(1);
+      const graph = JSON.parse(scripts[0].textContent || '{}') as { '@graph': Record<string, unknown>[] };
+      const document = win.document;
+      const close = () => win.happyDOM.abort();
+      return { graph, document, close };
+    };
+    const home = page('index.html');
+    expect(home.graph['@graph'].some(item => item['@type'] === 'ItemList')).toBe(true);
+    home.close();
+    const guide = page('packages/pi-web-access/index.html');
+    const article = guide.graph['@graph'].find(item => item['@type'] === 'TechArticle');
+    expect(article?.headline).not.toContain('| Pi Index');
+    expect(guide.document.querySelector('.byline a')?.getAttribute('href')).toBe('/about/');
+    expect(guide.document.querySelector('.byline time')?.getAttribute('datetime')).toBe('2026-09-21');
+    guide.close();
+    const chineseGuide = page('zh/packages/pi-web-access/index.html');
+    expect(chineseGuide.document.querySelector('.byline a')?.getAttribute('href')).toBe('/zh/about/');
+    chineseGuide.close();
+    const topic = page('topics/pi-durable/index.html');
+    expect(topic.graph['@graph'].some(item => item['@type'] === 'ItemList')).toBe(true);
+    topic.close();
+    const talks = page('talks/index.html');
+    expect(talks.graph['@graph'].some(item => item['@type'] === 'ItemList')).toBe(true);
+    talks.close();
+    const videoPage = page('talks/pi-durable/index.html');
+    const video = videoPage.graph['@graph'].find(item => item['@type'] === 'VideoObject');
+    expect(String(video?.thumbnailUrl)).toStartWith('https://piindex.dev/');
+    expect(video?.uploadDate).toBeTruthy();
+    expect(String(video?.name)).not.toContain('| Pi Index');
+    videoPage.close();
+    for (const [file, heading] of [
+      ['about/index.html', 'About Pi Index'],
+      ['zh/about/index.html', '关于 Pi Index'],
+      ['methodology/index.html', 'How we pick and verify'],
+      ['zh/methodology/index.html', '如何挑选与核验'],
+    ] as const) {
+      const info = page(file);
+      expect(info.document.querySelector('h1')?.textContent).toBe(heading);
+      expect(info.document.querySelector('link[rel="canonical"]')?.getAttribute('href')).toBe(`https://piindex.dev/${file.replace(/index\.html$/, '')}`);
+      for (const lang of ['en', 'zh-CN', 'x-default']) expect(info.document.querySelector(`link[hreflang="${lang}"]`)).not.toBeNull();
+      expect(info.document.querySelectorAll('script[data-domain]')).toHaveLength(1);
+      info.close();
+    }
+    const sitemap = readdirSync(dist).filter(file => /^sitemap.*\.xml$/.test(String(file))).map(file => readFileSync(new URL(String(file), dist), 'utf8')).join('\n');
+    for (const url of ['https://piindex.dev/about/', 'https://piindex.dev/zh/about/', 'https://piindex.dev/methodology/', 'https://piindex.dev/zh/methodology/']) {
+      expect(sitemap).toContain(url);
+    }
+    expect(sitemap).toContain('hreflang="zh-CN"');
+    expect(sitemap).toContain('hreflang="en"');
+  });
+
   test('non-talk pages keep the default referrer policy', () => {
     const win = new Window();
     try {

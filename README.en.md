@@ -404,7 +404,7 @@ Editor integration packages for embedding Pi into IDEs.
 
 Projects whose own source code runs on [Pi Durable](https://earendil.com/posts/pi-durable/), Earendil's experimental durable harness. Most are standalone apps or libraries rather than Pi packages. See the [Pi Durable topic](https://piindex.dev/topics/pi-durable/) for setup notes and data boundaries.
 
-> pi-fabric (Subagents) and webfox (Web Access & Search) also run on Pi Durable and are listed under Packages.
+> pi-fabric (Subagents), webfox (Web Access & Search), and pi-durabletask-mcp (MCP Adapter) also run on Pi Durable and are listed under Packages.
 
 - [pi-pocket](https://github.com/TannerMidd/pi-pocket) - Self-hosted, mobile-first multiplayer web app for Pi agents: shared live sessions, steering and queues, forks into git worktrees, schedules and approvals. One Pi Durable harness keeps every session in a single SQLite file. Install from a Git checkout.
 - [oppi](https://github.com/duh17/oppi) - iPhone and iPad client for Pi with a self-hosted server. Durable sessions are an experiment: enable experimental.serverDurable on the server, then turn them on in the app's experiments settings. `npm install -g oppi-server`
@@ -419,7 +419,6 @@ Projects whose own source code runs on [Pi Durable](https://earendil.com/posts/p
 - [antiproton](https://github.com/botiverse/antiproton) - Multi-tenant agent runtime on Cloudflare: one Durable Object per tenant and agent, and a tool gateway that keeps credentials out of the model context. Pi Durable runs the agent inside each object.
 - [sift](https://github.com/timReynolds/sift) - Multi-agent PR review as a GitHub Action: a lead reviewer and specialists inspect code in Docker workspaces, with a SQLite snapshot per PR. Trusted repositories only; fork PRs are skipped.
 - [pi-durable-subagents](https://github.com/anasalqoyyum/pi-durable-subagents) - Pi extension for background subagents you can inspect, steer and recover after a restart, optionally isolated in git worktrees. `pi install git:github.com/anasalqoyyum/pi-durable-subagents`
-- [pi-durabletask-mcp](https://github.com/Nyarlathoteppppp/pi-durabletask-mcp) - MCP server that delegates tasks to Durable subagents with background execution, steering and crash recovery. Requires a global Pi install; no Windows support. `npm install -g pi-durabletask-mcp`
 
 
 ## Clients & SDKs

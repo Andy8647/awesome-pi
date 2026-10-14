@@ -1,0 +1,6 @@
+---
+import { serializeJsonLd, type JsonLdGraph } from '../lib/structured-data';
+
+const { data } = Astro.props as { data: JsonLdGraph };
+---
+<script is:inline type="application/ld+json" set:html={serializeJsonLd(data)} />

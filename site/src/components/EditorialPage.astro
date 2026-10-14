@@ -1,9 +1,12 @@
 ---
 import Analytics from './Analytics.astro';
+import JsonLd from './JsonLd.astro';
+import SiteFooter from './SiteFooter.astro';
 import { slug as resourceSlug, type Locale } from '../lib/catalog';
 import { getEditorial, repoDestination, reviewedResource } from '../lib/editorial';
 import { createPublishedCatalog, getPublishedRoute, getPublishedSlugs, packagePath, resolvePublishedResource, routePath, type RouteKind } from '../lib/published-routes';
-import { categoryLabel, repository, text } from '../lib/i18n';
+import { categoryLabel, infoPath, repository, text } from '../lib/i18n';
+import { editorialGraph, pageHeadline } from '../lib/structured-data';
 import englishReadme from '../../../README.en.md?raw';
 import chineseReadme from '../../../README.md?raw';
 import Icon from './Icon.astro';
@@ -20,7 +23,9 @@ const path = routePath(kind, slug, locale);
 const canonical = new URL(path, Astro.site).href;
 const english = new URL(routePath(kind, slug, 'en'), Astro.site).href;
 const chinese = new URL(routePath(kind, slug, 'zh'), Astro.site).href;
-const title = page.title[locale].endsWith('| Pi Index') ? page.title[locale] : `${page.title[locale]} | Pi Index`;
+const headline = pageHeadline(page.title[locale]);
+const title = `${headline} | Pi Index`;
+const reviewedOn = page.resources.map(review => review.verification.date).filter(date => /^\d{4}-\d{2}-\d{2}/.test(date)).sort().at(-1);
 const label = kind === 'topics' ? (zh ? '专题' : 'Topic') : kind === 'categories' ? (zh ? '选型指南' : 'Selection guide') : (zh ? '插件指南' : 'Package guide');
 const surface = kind === 'topics' ? 'topic' : kind === 'categories' ? 'category' : 'detail';
 const packageRoute = kind === 'packages' ? getPublishedRoute(slug) : undefined;
@@ -28,11 +33,13 @@ const reviews = page.resources.map(review => ({ review, resource: kind === 'pack
 const alternatives = (page.alternatives ?? []).map(name => reviewedResource(name, catalog));
 const image = new URL('/og-image-v4.png', Astro.site).href;
 const badge = `[![Pi Index](${new URL(`/badge/${slug}.svg`, Astro.site).href})](${canonical})`;
-const schema = {
-  '@context': 'https://schema.org', '@type': kind === 'packages' ? 'TechArticle' : 'CollectionPage',
-  name: title, headline: title, description: page.description[locale], url: canonical,
-  inLanguage: zh ? 'zh-CN' : 'en', isPartOf: { '@type': 'WebSite', name: 'Pi Index', url: new URL('/', Astro.site).href },
-};
+const primary = reviews[0];
+const schema = editorialGraph({
+  kind, locale, url: canonical, homeUrl: new URL(base, Astro.site).href, title: page.title[locale],
+  description: page.description[locale], image, dates: page.resources.map(review => review.verification.date),
+  items: reviews.map(({ resource }) => ({ name: resource.name, url: `${canonical}#${resourceSlug(resource.name)}` })),
+  software: kind === 'packages' && primary ? { name: primary.resource.name, codeRepository: primary.resource.url, revision: primary.review.verification.revision } : undefined,
+});
 ---
 <!doctype html>
 <html lang={zh ? 'zh-CN' : 'en'}>
@@ -59,7 +66,7 @@ const schema = {
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={page.description[locale]} />
     <meta name="twitter:image" content={image} />
-    <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />
+    <JsonLd data={schema} />
     <Analytics />
   </head>
   <body>
@@ -79,8 +86,9 @@ const schema = {
       <header class="editorial-intro">
         <nav class="breadcrumbs" aria-label={zh ? '面包屑导航' : 'Breadcrumb'}><a href={base}>Pi Index</a><span aria-hidden="true">/</span><span>{label}</span></nav>
         <p class="eyebrow">{label}</p>
-        <h1>{title.replace(/\s*\| Pi Index$/, '')}</h1>
+        <h1>{headline}</h1>
         <p class="editorial-deck">{page.description[locale]}</p>
+        {reviewedOn && <p class="byline">{zh ? '作者' : 'By'} <a href={infoPath('about', locale)}>Kieran</a> · {zh ? '核验于' : 'Reviewed'} <time datetime={reviewedOn}>{reviewedOn}</time></p>}
         {packageRoute?.status === 'deprecated' && <aside class="deprecated-notice" role="note"><strong>{zh ? '已废弃 / 已下架' : 'Deprecated / removed'}</strong><p>{packageRoute.deprecatedReason[locale]}</p>{packageRoute.replacementSlug && getPublishedSlugs('packages').includes(packageRoute.replacementSlug) && <a href={routePath('packages', packageRoute.replacementSlug, locale)}>{zh ? '查看替代方案 →' : 'View replacement →'}</a>}</aside>}
       </header>
       <div class="editorial-layout">
@@ -138,7 +146,12 @@ const schema = {
           <nav class="related-guides" aria-label={zh ? '更多指南' : 'More guides'}>{getPublishedSlugs('categories').map(category => <a class="guide-link" href={routePath('categories', category, locale)}>{categoryLabel(catalog.categories.find(item => item.id === category)?.name ?? category, locale)} →</a>)}{getPublishedSlugs('topics').map(topic => <a class="topic-link" href={routePath('topics', topic, locale)}>{getEditorial('topics', topic).navLabel?.[locale] ?? getEditorial('topics', topic).title[locale].replace(/\s*\| Pi Index$/, '')} →</a>)}</nav>
         </article>
       </div>
-      <footer class="site-footer"><div><a class="footer-brand" href={base}><span>pi</span>index</a><p>{t.notice}</p></div><div class="footer-links"><a href={`${repository}/issues/new`}>{t.report} ↗</a><a href={base}>{zh ? '返回目录' : 'Back to directory'} →</a></div></footer>
+      <SiteFooter locale={locale}>
+        <a class="footer-brand" href={base}><span>pi</span>index</a>
+        <p>{t.notice}</p>
+        <a slot="links" href={`${repository}/issues/new`}>{t.report} ↗</a>
+        <a slot="links" href={base}>{zh ? '返回目录' : 'Back to directory'} →</a>
+      </SiteFooter>
       <div id="copy-status" class="copy-status" role="status" aria-live="polite"></div>
     </main>
     <script>

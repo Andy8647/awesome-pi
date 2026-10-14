@@ -2,6 +2,9 @@
 .breadcrumbs { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: .8rem; margin-bottom: 38px; }
 .editorial h1 { font-size: clamp(2rem, 4vw, 3.25rem); letter-spacing: -.045em; text-wrap: balance; }
 .editorial-deck { max-width: 65ch; font-size: 1.1rem; line-height: 1.7; color: var(--muted); margin: 20px 0 0; }
+.byline { margin: 16px 0 0; color: var(--muted); font-size: .95rem; }
+.byline a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: #187a4540; }
+.byline a:hover { text-decoration-color: currentColor; }
 .editorial-layout { display: grid; grid-template-columns: 190px minmax(0, 1fr); gap: 48px; align-items: start; }
 .editorial-nav { position: sticky; top: 24px; max-height: calc(100dvh - 48px); overflow-y: auto; }
 .editorial-nav nav { display: flex; flex-direction: column; gap: 4px; font-size: .84rem; line-height: 1.5; }

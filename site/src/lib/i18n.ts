@@ -2,6 +2,9 @@ import type { Locale, ResourceKind } from './catalog';
 
 export const repository = 'https://github.com/BubblePtr/awesome-pi';
 export const kindOrder: ResourceKind[] = ['packages', 'themes', 'integrations', 'durable', 'clients', 'distributions'];
+export function infoPath(page: 'about' | 'methodology', locale: Locale): string {
+  return `${locale === 'zh' ? '/zh' : ''}/${page}/`;
+}
 export const text = {
   en: {
     title: 'Pi Index — A curated directory for Pi Coding Agent',
@@ -18,6 +21,7 @@ export const text = {
     missing: 'See the project for installation instructions.',
     maintained: 'Open source. Community maintained.',
     notice: 'An independent community directory. Inclusion does not imply endorsement by Pi.',
+    about: 'About', methodology: 'How we verify',
     source: 'Read the list on GitHub', report: 'Report an issue', license: 'List licensed under CC0',
     copiedStatus: 'Installation command copied.', copyError: 'Could not copy. Please select the command and copy it manually.',
     noScript: 'All resources are listed below. Enable JavaScript to search, filter, and copy commands.',
@@ -40,6 +44,7 @@ export const text = {
     missing: '请前往项目页面查看安装说明。',
     maintained: '开源，由社区共同维护。',
     notice: '独立社区目录，收录不代表 Pi 官方发布或背书。',
+    about: '关于', methodology: '如何核验',
     source: '在 GitHub 阅读清单', report: '报告问题', license: '清单采用 CC0 许可',
     copiedStatus: '安装命令已复制。', copyError: '复制失败，请选中安装命令后手动复制。',
     noScript: '下方已展示全部资源。启用 JavaScript 后可使用搜索、筛选与命令复制。',

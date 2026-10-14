@@ -1,8 +1,11 @@
 ---
 import Analytics from './Analytics.astro';
 import Icon from './Icon.astro';
+import JsonLd from './JsonLd.astro';
+import SiteFooter from './SiteFooter.astro';
 import type { Locale } from '../lib/catalog';
 import { talks, talkPath, timestamp, type Talk } from '../lib/talks';
+import { talkGraph, talksIndexGraph } from '../lib/structured-data';
 import '../styles/global.css';
 import '../styles/talks.css';
 
@@ -15,17 +18,20 @@ const description = talk
   ? (zh ? `观看 ${talk.date} 的 ${talk.series}：${talk.title.zh}。附中文滚动字幕、时间戳和 AI 总结。` : `Watch ${talk.series} from ${talk.date}: ${talk.title.en}. Includes a synchronized transcript, timestamps and an AI summary.`)
   : (zh ? 'Mario Zechner 与 Armin Ronacher 聊 Pi、模型、代码质量和 agent 工程。五期播客，附中文字幕与 AI 总结。' : 'Mario Zechner and Armin Ronacher on Pi, models, code quality and agent engineering. Five conversations with transcripts and AI summaries.');
 const canonical = new URL(talkPath(locale, talk?.slug), Astro.site).href;
+const homeUrl = new URL(base, Astro.site).href;
+const indexUrl = new URL(talkPath(locale), Astro.site).href;
+const indexName = zh ? '播客' : 'Talks';
 const image = new URL(talk?.poster ?? '/og-image-v4.png', Astro.site).href;
 const date = (value: string) => new Intl.DateTimeFormat(zh ? 'zh-CN' : 'en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' }).format(new Date(value));
-const schema = talk ? {
-  '@context': 'https://schema.org', '@type': 'VideoObject', name: talk.title[locale], description,
-  thumbnailUrl: image, uploadDate: talk.uploadedAt,
-  duration: `PT${Math.floor(talk.duration)}S`, inLanguage: 'en', url: canonical,
-  isBasedOn: talk.source,
-  ...(talk.youtube ? { embedUrl: `https://www.youtube.com/embed/${talk.youtube}` } : { contentUrl: talk.video }),
-} : {
-  '@context': 'https://schema.org', '@type': 'CollectionPage', name: heading, description, url: canonical,
-};
+const schema = talk ? talkGraph({
+  locale, url: canonical, homeUrl, indexUrl, indexName, title: talk.title[locale], description,
+  thumbnailUrl: image, uploadDate: talk.uploadedAt, durationSeconds: talk.duration,
+  contentUrl: talk.video, embedUrl: talk.youtube ? `https://www.youtube.com/embed/${talk.youtube}` : undefined,
+  sourceUrl: talk.source,
+}) : talksIndexGraph({
+  locale, url: canonical, homeUrl, name: heading, description,
+  items: talks.map(item => ({ name: item.title[locale], url: new URL(talkPath(locale, item.slug), Astro.site).href, uploadedAt: item.uploadedAt })),
+});
 ---
 <!doctype html>
 <html lang={zh ? 'zh-CN' : 'en'}>
@@ -46,7 +52,7 @@ const schema = talk ? {
     <meta property="og:type" content={talk ? 'video.other' : 'website'} />
     <meta property="og:image" content={image} />
     <meta name="twitter:card" content="summary_large_image" />
-    <script is:inline type="application/ld+json" set:html={JSON.stringify(schema).replace(/</g, '\\u003c')} />
+    <JsonLd data={schema} />
     <Analytics />
   </head>
   <body>
@@ -114,7 +120,11 @@ const schema = talk ? {
           <div class="talk-card-copy"><p class="talk-card-date"><time datetime={item.date}>{date(item.date)}</time> · {item.series}</p><h2><a href={talkPath(locale, item.slug)}>{item.title[locale]}</a></h2><p>{item.summary[locale][0]?.text}</p><div class="talk-tags">{item.tags.map(tag => <span>{tag}</span>)}</div><a class="talk-watch" href={talkPath(locale, item.slug)}>{zh ? '观看播客' : 'Watch conversation'} →</a></div>
         </article>)}</div>
       </>}
-      <footer class="site-footer"><div><a class="footer-brand" href={base}><span>pi</span>index</a><p>{zh ? '社区整理。视频来自 @pidotdev，版权归原作者所有。' : 'Community curated. Videos from @pidotdev belong to their creators.'}</p></div><a href={base}>{zh ? '浏览资源目录' : 'Browse the directory'} →</a></footer>
+      <SiteFooter locale={locale}>
+        <a class="footer-brand" href={base}><span>pi</span>index</a>
+        <p>{zh ? '社区整理。视频来自 @pidotdev，版权归原作者所有。' : 'Community curated. Videos from @pidotdev belong to their creators.'}</p>
+        <a slot="links" href={base}>{zh ? '浏览资源目录' : 'Browse the directory'} →</a>
+      </SiteFooter>
     </main>
     <script>
       import { initializeTalkPlayer } from '../scripts/talk-player';

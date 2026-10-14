@@ -1,0 +1,15 @@
+---
+import type { Locale } from '../lib/catalog';
+import { infoPath, text } from '../lib/i18n';
+
+const { locale } = Astro.props as { locale: Locale };
+const t = text[locale];
+---
+<footer class="site-footer">
+  <div><slot /></div>
+  <div class="footer-links">
+    <a href={infoPath('about', locale)}>{t.about}</a>
+    <a href={infoPath('methodology', locale)}>{t.methodology}</a>
+    <slot name="links" />
+  </div>
+</footer>

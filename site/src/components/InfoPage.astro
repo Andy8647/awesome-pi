@@ -1,0 +1,148 @@
+---
+import Analytics from './Analytics.astro';
+import Icon from './Icon.astro';
+import JsonLd from './JsonLd.astro';
+import SiteFooter from './SiteFooter.astro';
+import type { Locale } from '../lib/catalog';
+import { CANONICAL_REPOSITORY, MAINTAINER_GITHUB, MAINTAINER_X } from '../lib/identity';
+import { infoPath, repository, text } from '../lib/i18n';
+import { infoGraph } from '../lib/structured-data';
+import '../styles/global.css';
+import '../styles/editorial.css';
+
+const { locale = 'en', page } = Astro.props as { locale: Locale; page: 'about' | 'methodology' };
+const zh = locale === 'zh';
+const t = text[locale];
+const base = zh ? '/zh/' : '/';
+const path = infoPath(page, locale);
+const canonical = new URL(path, Astro.site).href;
+const homeUrl = new URL(base, Astro.site).href;
+const english = new URL(infoPath(page, 'en'), Astro.site).href;
+const chinese = new URL(infoPath(page, 'zh'), Astro.site).href;
+const image = new URL('/og-image-v4.png', Astro.site).href;
+const copy = {
+  about: {
+    name: zh ? '关于 Pi Index' : 'About Pi Index',
+    description: zh
+      ? 'Pi Index 由 Kieran 维护，是 Pi Coding Agent 的独立资源目录，与 Pi 没有隶属关系。勘误请通过 GitHub Issue。'
+      : 'Kieran maintains Pi Index, an independent directory of Pi Coding Agent packages. It is not affiliated with Pi. Corrections go through GitHub issues.',
+  },
+  methodology: {
+    name: zh ? '如何挑选与核验' : 'How we pick and verify',
+    description: zh
+      ? 'Pi Index 如何收录条目、把指南核验钉在版本和 commit 上、更新 Star 与下载量，以及徽章不影响收录。'
+      : 'How Pi Index chooses listings, pins guide reviews to a version and commit, refreshes GitHub stars and npm downloads, and treats the optional badge.',
+  },
+}[page];
+const title = `${copy.name} | Pi Index`;
+const issues = `${repository}/issues/new`;
+const schema = infoGraph({ page, locale, url: canonical, homeUrl, name: copy.name, description: copy.description });
+---
+<!doctype html>
+<html lang={zh ? 'zh-CN' : 'en'}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={copy.description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="en" href={english} />
+    <link rel="alternate" hreflang="zh-CN" href={chinese} />
+    <link rel="alternate" hreflang="x-default" href={english} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={copy.description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content={zh ? 'zh_CN' : 'en_US'} />
+    <meta property="og:image" content={image} />
+    <meta property="og:image:width" content="1730" />
+    <meta property="og:image:height" content="909" />
+    <meta property="og:image:alt" content="Pi Index" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={copy.description} />
+    <meta name="twitter:image" content={image} />
+    <JsonLd data={schema} />
+    <Analytics />
+  </head>
+  <body>
+    <a class="skip-link" href="#content">{zh ? '跳转到内容' : 'Skip to content'}</a>
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href={base} aria-label="Pi Index"><span class="brand-mark" aria-hidden="true">π</span><span><span class="brand-muted">pi</span>index</span></a>
+        <nav class="header-links" aria-label={zh ? '主要导航' : 'Main navigation'}>
+          <a href={`${base}talks/`}>{zh ? '播客' : 'Talks'}</a>
+          <a href={base}>{zh ? '资源目录' : 'Directory'}</a>
+          <a class="language-link" data-language href={infoPath(page, zh ? 'en' : 'zh')} lang={zh ? 'en' : 'zh-CN'}><Icon name="globe" size={16} />{zh ? 'English' : '中文'}</a>
+          <a class="github-link" href={repository} aria-label="GitHub" target="_blank" rel="noopener noreferrer"><Icon name="github" size={17} /></a>
+        </nav>
+      </div>
+    </header>
+    <main id="content" class="page-shell editorial">
+      <header class="editorial-intro">
+        <nav class="breadcrumbs" aria-label={zh ? '面包屑导航' : 'Breadcrumb'}><a href={base}>Pi Index</a><span aria-hidden="true">/</span><span>{copy.name}</span></nav>
+        <h1>{copy.name}</h1>
+        <p class="editorial-deck">{copy.description}</p>
+      </header>
+      <article class="editorial-body">
+        {page === 'about' ? <>
+          <section>
+            <h2>{zh ? '谁在维护' : 'Who maintains it'}</h2>
+            <p>{zh ? '网站和公开清单由 Kieran 维护。GitHub 账号是 bubbleptr，清单仓库是 awesome-pi。本站没有联系邮箱，新增和勘误都走这个仓库的 Issue。' : 'Kieran maintains the site and the public list. The GitHub account is bubbleptr, and the list lives in the awesome-pi repository. There is no contact email. Additions and corrections go through issues on that repository.'}</p>
+            <ul>
+              <li><a href={MAINTAINER_GITHUB} target="_blank" rel="noopener noreferrer">{zh ? 'Kieran 的 GitHub' : 'Kieran on GitHub'} ↗</a></li>
+              <li><a href={MAINTAINER_X} target="_blank" rel="noopener noreferrer">{zh ? 'Kieran 的 X' : 'Kieran on X'} ↗</a></li>
+              <li><a href={CANONICAL_REPOSITORY} target="_blank" rel="noopener noreferrer">{zh ? 'awesome-pi 仓库' : 'awesome-pi repository'} ↗</a></li>
+            </ul>
+          </section>
+          <section>
+            <h2>{zh ? '目录里有什么' : 'What is listed'}</h2>
+            <p>{zh ? '目录就是仓库里的中英双语清单。每一条有名称、链接、中英文说明，以及项目公开的安装命令（如果有）。站点在某一条缺少译文，或两边的安装命令不一致时不会构建。' : 'The directory is the bilingual list in the repository. Each entry has a name, a link, an English description, a Chinese description, and an install command when the project publishes one. The site does not build if a translation is missing or the install commands disagree.'}</p>
+            <p>{zh ? <>少数扩展、分类和专题另有指南页。指南是一次钉住版本和 commit 的源码核验，不是目录里那一行的重复。核验范围写在 <a href={infoPath('methodology', locale)}>如何挑选与核验</a>。</> : <>A few packages, categories, and topics also have a guide. A guide is a source review pinned to a version and a commit, not a second copy of the directory line. The check itself is described in <a href={infoPath('methodology', locale)}>How we pick and verify</a>.</>}</p>
+          </section>
+          <section>
+            <h2>{zh ? '与 Pi 没有隶属关系' : 'Not part of Pi'}</h2>
+            <p>{zh ? <><a href="https://pi.dev" target="_blank" rel="noopener noreferrer">Pi</a> 是 earendil-works 发布的终端编程 harness。Pi Index 是独立目录。收录不代表 Pi 官方发布，也不代表背书。</> : <><a href="https://pi.dev" target="_blank" rel="noopener noreferrer">Pi</a> is the terminal coding harness published by earendil-works. Pi Index is a separate directory. A listing is not an official Pi release and is not an endorsement.</>}</p>
+          </section>
+          <section>
+            <h2>{zh ? '如何提交或勘误' : 'Submit or correct'}</h2>
+            <p>{zh ? '要加入一个资源、改正说明，或质疑某篇指南，请开 GitHub Issue。符合清单格式的 Pull Request 也可以。Issue 是对外的联系方式。' : 'Open a GitHub issue to add a resource, fix a description, or challenge a guide. Pull requests that follow the list format are welcome too. Issues are the contact channel.'}</p>
+            <p><a href={issues} target="_blank" rel="noopener noreferrer">{zh ? '开一个 Issue' : 'Open an issue'} ↗</a></p>
+          </section>
+        </> : <>
+          <section>
+            <h2>{zh ? '什么会被收录' : 'What gets listed'}</h2>
+            <p>{zh ? '这是一份精选清单，不是 pi.dev/packages 的全量镜像。条目按用途分组。优先收有 GitHub 仓库或项目自己文档的资源。数据来自 pi.dev/packages、GitHub、npm，以及其他公开的社区资料。' : 'This is a curated list, not a mirror of pi.dev/packages. Entries are grouped by what they do. Projects with a GitHub repository or their own documentation are preferred. The list draws on pi.dev/packages, GitHub, npm, and other public community sources.'}</p>
+            <p>{zh ? '用 npm: 安装，不表示这个包属于 Pi 官方。只有发布者和源码仓库对得上时，才会写成 Pi 官方。各项目版权归作者；清单本身采用 CC0。' : 'An npm: install command does not make a package part of official Pi. Something is described as official Pi only when its publisher and source repository support that. Projects stay under their authors’ copyright. The list itself is CC0.'}</p>
+          </section>
+          <section>
+            <h2>{zh ? '指南如何核验' : 'How a guide is checked'}</h2>
+            <p>{zh ? '指南和目录里的一行不是一回事。指南上的每个项目会标成「已查阅源码 / 文档」或「已实测」，并写上日期、版本和 commit（或其他修订），同时链到读过的文件。没有标成已实测的功能、性能和比例，不是本站测出来的。' : 'A guide is not the directory line. Each project on a guide is marked “Source / documentation reviewed” or “Tested”, with the date, a version, and a commit or other revision, plus links to the files that were read. Features, performance, and savings that are not marked tested are not measurements by this site.'}</p>
+            <p>{zh ? '专题页会写明整理日期。Pi Durable 专题于 2026-10-07 整理：只保留非测试源码确实导入 @earendil-works/pi-durable 的项目，按固定 commit 做源码核验，没有安装运行。Jev 专题于 2026-09-22 核验，只查阅了源码和文档，没有跑付费 API。' : 'Topic pages name the day they were compiled. The Pi Durable topic was compiled on 2026-10-07: it kept projects whose non-test source imports @earendil-works/pi-durable, reviewed each at a pinned commit, and did not install them. The Jev topic was reviewed on 2026-09-22 from source and docs, without paid API calls.'}</p>
+          </section>
+          <section>
+            <h2>{zh ? 'Star 与下载量' : 'Stars and downloads'}</h2>
+            <p>{zh ? <>GitHub Star 和 npm 下载量由 <a href={`${repository}/blob/main/.github/workflows/stats.yml`} target="_blank" rel="noopener noreferrer">GitHub Actions 工作流</a>更新，时间为每周一 02:17 UTC，也可以手动触发。下载量是这次快照里、截止到运行前一天的最近 7 天合计，百分比则对比再往前的 7 天。首页会标出快照日期。</> : <>GitHub stars and npm downloads are refreshed by a <a href={`${repository}/blob/main/.github/workflows/stats.yml`} target="_blank" rel="noopener noreferrer">GitHub Actions workflow</a> every Monday at 02:17 UTC. It can also be run by hand. The download figure is the sum of the seven days ending the day before that run, and the percent change compares those days with the seven before them. The home page prints the snapshot date.</>}</p>
+            <p>{zh ? '某次请求失败时，如果已有上一次的数字，就保留它。从未取到过的项目不显示数字。没有数字不是 0。' : 'When a request fails and an older figure exists, that figure is kept. A project that has never returned a number shows nothing. A missing figure is not a zero.'}</p>
+          </section>
+          <section>
+            <h2>{zh ? '徽章' : 'The badge'}</h2>
+            <p>{zh ? '收录不收费，也没有申请表。README 里的 “Listed on Pi Index” 徽章可加可不加。加上徽章不会改变是否收录、如何收录，也不会让指南因此推荐它。' : 'Listing costs nothing, and there is no application form. The “Listed on Pi Index” badge in the README is optional. Adding it does not change whether a project is listed, how it is listed, or whether a guide recommends it.'}</p>
+          </section>
+          <section>
+            <h2>{zh ? '勘误' : 'Corrections'}</h2>
+            <p>{zh ? <>说明、安装命令或核验有误，请开 GitHub Issue。谁在维护这个站，写在 <a href={infoPath('about', locale)}>关于</a>。</> : <>If a description, install command, or review is wrong, open a GitHub issue. Who maintains the site is on <a href={infoPath('about', locale)}>About</a>.</>}</p>
+            <p><a href={issues} target="_blank" rel="noopener noreferrer">{zh ? '开一个 Issue' : 'Open an issue'} ↗</a></p>
+          </section>
+        </>}
+      </article>
+      <SiteFooter locale={locale}>
+        <a class="footer-brand" href={base}><span>pi</span>index</a>
+        <p>{t.notice}</p>
+        <a slot="links" href={issues} target="_blank" rel="noopener noreferrer">{t.report} ↗</a>
+        <a slot="links" href={base}>{zh ? '返回目录' : 'Back to directory'} →</a>
+      </SiteFooter>
+    </main>
+  </body>
+</html>
