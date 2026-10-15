@@ -1,0 +1,26 @@
+name: 验证 Pi Index MCP
+
+on:
+  push:
+    branches: [main]
+    paths: ['mcp/**', '.github/workflows/mcp.yml']
+  pull_request:
+    paths: ['mcp/**', '.github/workflows/mcp.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: mcp/package-lock.json
+      - run: npm ci
+        working-directory: mcp
+      - run: npm test
+        working-directory: mcp

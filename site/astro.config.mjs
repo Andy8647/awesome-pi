@@ -28,6 +28,7 @@ export default defineConfig({
   vite: { server: { proxy: mediaProxy } },
   integrations: [
     sitemap({
+      filter: page => !page.includes('catalog.json'),
       i18n: {
         defaultLocale: 'en',
         locales: {

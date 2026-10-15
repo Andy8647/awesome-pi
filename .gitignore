@@ -2,6 +2,7 @@
 node_modules/
 site/.astro/
 site/dist/
+mcp/dist/
 .vercel/
 output/
 .playwright-cli/
