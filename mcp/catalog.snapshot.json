@@ -362,7 +362,7 @@
     {
       "kind": "package",
       "slug": "tintinweb-pi-subagents",
-      "title": "@tintinweb/pi-subagents: Background & Worktrees",
+      "title": "@tintinweb/pi-subagents: Background Subagents",
       "titleZh": "@tintinweb/pi-subagents：后台代理与 Worktree 隔离",
       "description": "Understand Tintin’s SDK child sessions, optional Git worktrees, live widgets, parallel limits and safe handoff of code changes.",
       "descriptionZh": "了解 Tintin 的 SDK 子会话、可选 Git worktree、实时组件、并行限制与代码修改交接。",
@@ -813,7 +813,7 @@
         {
           "kind": "package",
           "slug": "tintinweb-pi-subagents",
-          "title": "@tintinweb/pi-subagents: Background & Worktrees",
+          "title": "@tintinweb/pi-subagents: Background Subagents",
           "piindexUrl": "https://piindex.dev/packages/tintinweb-pi-subagents/"
         }
       ]

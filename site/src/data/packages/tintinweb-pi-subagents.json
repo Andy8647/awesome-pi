@@ -1,7 +1,7 @@
 {
   "slug": "tintinweb-pi-subagents",
   "title": {
-    "en": "@tintinweb/pi-subagents: Background & Worktrees",
+    "en": "@tintinweb/pi-subagents: Background Subagents",
     "zh": "@tintinweb/pi-subagents：后台代理与 Worktree 隔离"
   },
   "description": {
