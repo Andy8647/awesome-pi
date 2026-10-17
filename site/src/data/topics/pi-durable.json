@@ -1,11 +1,11 @@
 {
   "slug": "pi-durable",
   "title": {
-    "en": "Built on Pi Durable: Apps, Bots & Storage Backends | Pi Index",
+    "en": "Built on Pi Durable: Apps, Bots, Storage Backends | Pi Index",
     "zh": "基于 Pi Durable 的项目：应用、机器人与存储后端 | Pi Index"
   },
   "description": {
-    "en": "Community projects that run on Pi Durable, Earendil's experimental durable harness: multiplayer web and iOS clients, chat bots, Home Assistant, Pi extensions, Cloudflare and PostgreSQL backends. Source-reviewed with pinned commits.",
+    "en": "Community projects on Pi Durable, Earendil's experimental harness: web and iOS clients, chat bots, Home Assistant, Cloudflare and PostgreSQL backends.",
     "zh": "基于 Earendil 实验性 durable harness Pi Durable 的社区项目：多人 Web 与 iOS 客户端、聊天机器人、Home Assistant、Pi 扩展，以及 Cloudflare 与 PostgreSQL 后端。均按固定提交核验源码。"
   },
   "intro": {

@@ -1,11 +1,11 @@
 {
   "slug": "jev",
   "title": {
-    "en": "TypeSafe AI (Jev) for Pi: Plugins, Setup & Comparison | Pi Index",
+    "en": "TypeSafe AI (Jev) for Pi: Plugins & Comparison | Pi Index",
     "zh": "TypeSafe AI（Jev）Pi 插件：安装、配置与选型 | Pi Index"
   },
   "description": {
-    "en": "Compare five featured Jev integrations for Pi: tool-call judgments, supervision, tool discovery, skill selection and model routing. Setup, data sharing, failure behavior and reviewed source versions.",
+    "en": "Compare five featured Jev integrations for Pi: tool-call judgments, supervision, tool discovery, skill selection and model routing. Setup and data scope.",
     "zh": "比较五项主推 Pi Jev 集成：工具调用判定、会话监督、工具发现、技能选择与模型路由。说明安装配置、数据外发、故障行为与核验版本。"
   },
   "intro": {

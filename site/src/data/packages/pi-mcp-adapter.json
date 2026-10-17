@@ -1,7 +1,7 @@
 {
   "slug": "pi-mcp-adapter",
   "title": {
-    "en": "pi-mcp-adapter: MCP Setup, Lazy Servers & Token Costs",
+    "en": "pi-mcp-adapter: Lazy MCP Servers & Token Costs",
     "zh": "pi-mcp-adapter：MCP 配置、惰性启动与 Token 开销"
   },
   "description": {
