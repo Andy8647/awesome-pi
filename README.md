@@ -125,6 +125,9 @@ MCP (Model Context Protocol) 适配 Package，连接外部工具生态。
 - [pi-ext](https://github.com/tomsej/pi-ext) - 综合 UI 套件：leader-key 浮动面板、powerline footer、工具药丸标签、telescope 模糊查找。`pi install git:github.com/tomsej/pi-ext`
 - [@juicesharp/rpiv-btw](https://github.com/juicesharp/rpiv-mono) - juicesharp 版 btw 侧对话。`pi install npm:@juicesharp/rpiv-btw`
 - [pi-code-render](https://github.com/chengyayu/pi-code-render) - 把代码块渲染成带 `[COPY]` 一键复制按钮的主题配色卡片，点击卡片可切回原始围栏文本；复制成功后在页脚短暂提示，不污染对话。`pi install npm:pi-code-render`
+- [pi-starline](https://github.com/Andy8647/pi-starline) - Starship 风格状态栏、Opencode 风格编辑器边框，以及全屏模式下的鼠标操作：拖选复制、点击展开单个工具框、点击定位光标；配色支持 `$ref` 复用。`pi install npm:pi-starline`
+- [pi-tidy](https://github.com/Andy8647/pi-tidy) - Claude Code 风格的工具调用折叠：一次回复的多个调用压成一行，点开看单条；编辑 diff 并排显示且限制高度，失败行和后台任务不会被折进去。`pi install npm:pi-tidy`
+- [pi-ghostty-tab](https://github.com/Andy8647/pi-ghostty-tab) - 把 Ghostty 标签页标题当状态提示用：spinner、任务摘要，跑完 / 失败 / 等待回答时换图标，标签页不在前台时发系统通知。`pi install npm:pi-ghostty-tab`
 
 ---
 
@@ -398,6 +401,7 @@ Pi 核心不内置 plan mode，用扩展补只读规划。
 - [pi-acp](https://github.com/svkozak/pi-acp) - Pi 的 ACP（Agent Client Protocol）适配器，桥接到 Zed 等编辑器。`npm install -g pi-acp`
 - [VS Code Pi Chat Provider](https://marketplace.visualstudio.com/items?itemName=tintinweb.vscode-pi-model-chat-provider) - VS Code 语言模型聊天提供程序集成。
 - [pi-vscode-extension](https://github.com/Zetaphor/pi-vscode-extension) - 将 Pi 嵌入为 VS Code 扩展。`pi install git:github.com/Zetaphor/pi-vscode-extension`
+- [pi-ide-context](https://github.com/Andy8647/pi-ide-context) - 把 Neovim、VS Code、Obsidian 当前打开的文件、光标位置和选中文本注入 Pi 的上下文，省掉每轮复述改哪个文件；选区只在 60 秒内注入。`pi install npm:pi-ide-context`
 
 > Zed 编辑器通过 ACP Registry 原生支持 Pi：配置 `"agent_servers": { "pi-acp": { "type": "registry" } }` 即可使用。
 
