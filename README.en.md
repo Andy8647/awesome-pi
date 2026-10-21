@@ -126,7 +126,7 @@ Terminal UI enhancement packages for better interactive experience.
 - [@juicesharp/rpiv-btw](https://github.com/juicesharp/rpiv-mono) - Juicesharp's btw side conversation variant. `pi install npm:@juicesharp/rpiv-btw`
 - [pi-code-render](https://github.com/chengyayu/pi-code-render) - Renders fenced code blocks as theme-colored full-width cards with a `[COPY]` button at the end of the first line; click anywhere on a card to toggle between the card and the raw fenced markdown. Copies are confirmed briefly in the footer without polluting the conversation. `pi install npm:pi-code-render`
 - [pi-starline](https://github.com/Andy8647/pi-starline) - Starship-style statusline, Opencode-style editor chrome, and fullscreen mouse control: drag-select to copy, click to expand a single tool box, click to place the caret. Colours support `$ref` reuse. `pi install npm:pi-starline`
-- [pi-tidy](https://github.com/Andy8647/pi-tidy) - Claude Code-style tool folding: a reply's tool calls collapse into one line, click for one row per call. Edit diffs stay side by side and height-capped; failed calls and background jobs are never folded away. `pi install npm:pi-tidy`
+- [pi-tidy](https://github.com/Andy8647/pi-tidy) - Tool folding: a reply's tool calls collapse into one line, click for one row per call. Edit diffs stay side by side and height-capped; failed calls and background jobs are never folded away. `pi install npm:pi-tidy`
 - [pi-ghostty-tab](https://github.com/Andy8647/pi-ghostty-tab) - Ghostty tab titles as a status readout: spinner, task summary, done / failed / waiting icons, and a system notification when the tab is not focused. `pi install npm:pi-ghostty-tab`
 
 ---
